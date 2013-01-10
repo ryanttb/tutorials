@@ -1,49 +1,51 @@
 require( "spec_helper" );
 
-describe( "static_pages" ) {
+describe( "Sample App" ) {
   let (:base_title) { "Ruby on Rails Tutorial Sample App" };
 
-  describe( "about" ) {
-    it( "should have the content 'About'" ) {
-      visit( about_path );
-      page.should( have_content( "About" ) );
+  subject { page }
+
+  describe( "/about" ) {
+    before( :each ) { visit( about_path ); }
+
+    it {
+      should( have_content( "About" ) );
     }
   }
 
-  describe( "contact" ) {
-    it( "should have the title ':base_title | Contact Us'" ) {
-      visit( contact_path );
-      page.should( have_selector( "title", { text: "#{base_title} | Contact Us" } ) );
+  describe( "/contact" ) {
+    before( :each ) { visit( contact_path ); }
+
+    it {
+      should( have_selector( "title", { text: "#{base_title} | Contact Us" } ) );
     }
 
-    it( "should have 'Contact Us' in the header" ) {
-      visit( contact_path );
-      page.should( have_selector( "h1", { text: "Contact Us" } ) );
+    it {
+      should( have_selector( "h1", { text: "Contact Us" } ) );
     }
   }
 
   describe( "help" ) {
-    it( "should have the content 'Help'" ) {
-      visit( help_path );
-      page.should( have_content( "Help" ) );
+    before( :each ) { visit( help_path ) }
+
+    it {
+      should( have_content( "Help" ) );
     }
   }
 
-  describe( "home" ) {
-    before( :each ) {
-      visit( root_path )
+  describe( "/" ) {
+    before( :each ) { visit( root_path ) }
+
+    it {
+      should( have_selector( "title", { text: full_title( "" ) } ) );
     }
 
-    it( "should have 'Home' in the title" ) {
-      page.should( have_selector( "title", { text: "Home" } ) );
+    it {
+      should( have_selector( "a", { text: "Sign up" } ) );
     }
 
-    it( "should have a sign up link" ) {
-      page.should( have_selector( "a", { text: "Sign up" } ) );
-    }
-
-    it( "should have navigation" ) {
-      page.should( have_selector( "nav" ) );
+    it {
+      should( have_selector( "nav" ) );
     }
   }
 }
