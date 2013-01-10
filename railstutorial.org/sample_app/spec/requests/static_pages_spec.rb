@@ -14,14 +14,14 @@ describe "static_pages" do
     it "should have the title ':base_title | Contact Us'" do
       visit( "/static_pages/contact" );
       page.should( have_selector( "title", {
-        :text => "#{base_title} | Contact Us"
+        text: "#{base_title} | Contact Us"
       } ) );
     end
 
     it "should have 'Contact Us' in the header" do
       visit( "/static_pages/contact" );
       page.should( have_selector( "h1", {
-        :text => "Contact Us"
+        text: "Contact Us"
       } ) );
     end
   end
@@ -37,8 +37,20 @@ describe "static_pages" do
     it "should have 'Home' in the title" do
       visit( "/static_pages/home" );
       page.should( have_selector( "title", {
-        :text => "Home"
+        text: "Home"
       } ) );
+    end
+
+    it "should have a sign up link" do
+      visit( "/static_pages/home" );
+      page.should( have_selector( "a", {
+        text: "Sign up"
+      } ) );
+    end
+
+    it "should have navigation" do
+      visit( "/static_pages/home" );
+      page.should( have_selector( "nav" ) );
     end
   end
 end
