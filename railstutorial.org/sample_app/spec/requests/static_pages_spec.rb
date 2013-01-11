@@ -45,6 +45,10 @@ describe( "Sample App" ) {
     }
 
     it {
+      should( have_selector( "a.btn[href='/signup']" ) );
+    }
+
+    it {
       should( have_selector( "nav" ) );
     }
   }
