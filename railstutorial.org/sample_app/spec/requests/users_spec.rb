@@ -1,9 +1,9 @@
 require "spec_helper";
 
-describe( "Users" ) {
+describe( "users controller" ) {
   subject { page };
 
-  describe( "GET /signup" ) {
+  describe( "get /signup" ) {
     before( ) { visit( signup_path ); }
 
     it( ) {

@@ -1,44 +1,49 @@
 require( "spec_helper" );
 
-describe( "Sample App" ) {
-  let (:base_title) { "Ruby on Rails Tutorial Sample App" };
+describe( "static_pages controller" ) {
+  let( :base_title ) { "Ruby on Rails Tutorial Sample App" };
 
   subject { page }
 
-  describe( "/about" ) {
-    before( :each ) { visit( about_path ); }
-
-    it {
-      should( have_content( "About" ) );
-    }
+  shared_examples_for( "all_static_pages" ) {
+    it { should( have_selector( "h1", { text: heading } ) ); }
+    it { should( have_selector( "title", { text: full_title( page_title ) } ) ) }
   }
 
-  describe( "/contact" ) {
+  describe( "get /about" ) {
+    before( ) { visit( about_path ); }
+
+    let( :heading ) { "About" }
+    let( :page_title ) { "About" }
+
+    it_should_behave_like( "all_static_pages" );
+  }
+
+  describe( "get /contact" ) {
     before( :each ) { visit( contact_path ); }
 
-    it {
-      should( have_selector( "title", { text: "#{base_title} | Contact Us" } ) );
-    }
+    let( :heading ) { "Contact Us" }
+    let( :page_title ) { "Contact Us" }
 
-    it {
-      should( have_selector( "h1", { text: "Contact Us" } ) );
-    }
+    it_should_behave_like( "all_static_pages" );
   }
 
-  describe( "help" ) {
+  describe( "get /help" ) {
     before( :each ) { visit( help_path ) }
 
-    it {
-      should( have_content( "Help" ) );
-    }
+    let( :heading ) { "Help" }
+    let( :page_title ) { "Help" }
+
+    it_should_behave_like( "all_static_pages" );
   }
 
-  describe( "/" ) {
+  describe( "get /" ) {
     before( :each ) { visit( root_path ) }
 
-    it {
-      should( have_selector( "title", { text: full_title( "" ) } ) );
-    }
+    let( :heading ) { "Sample App" }
+    let( :page_title ) { "" }
+
+    it_should_behave_like( "all_static_pages" );
 
     it {
       should( have_selector( "a", { text: "Sign up" } ) );
