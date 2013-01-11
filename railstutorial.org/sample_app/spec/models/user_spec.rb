@@ -25,5 +25,19 @@ describe( "User model" ) {
 
   it { should( respond_to( :email ) ); }
 
+  it { should( be_valid() ); }
+
+  describe( "blank name" ) {
+    before { @user.name = " " }
+
+    it { should_not( be_valid() ); }
+  }
+
+  describe( "blank email" ) {
+    before { @user.email = " " }
+
+    it { should_not( be_valid() ); }
+  }
+
   #pending( "add some examples to (or delete) #{__FILE__}" );
 }
