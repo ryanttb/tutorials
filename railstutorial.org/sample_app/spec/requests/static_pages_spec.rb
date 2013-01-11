@@ -7,7 +7,7 @@ describe( "static_pages controller" ) {
 
   shared_examples_for( "all_static_pages" ) {
     it { should( have_selector( "h1", { text: heading } ) ); }
-    it { should( have_selector( "title", { text: full_title( page_title ) } ) ) }
+    it { should( have_selector( "title", { text: full_title( page_title ) } ) ); }
   }
 
   describe( "get /about" ) {
@@ -45,16 +45,30 @@ describe( "static_pages controller" ) {
 
     it_should_behave_like( "all_static_pages" );
 
-    it {
-      should( have_selector( "a", { text: "Sign up" } ) );
+    it { should( have_selector( "a", { text: "Sign up" } ) ); }
+
+    it { should( have_selector( "a.btn[href='/signup']" ) ); }
+
+    it { should( have_selector( "nav" ) ); }
+
+    it( "check about link" ) {
+      click_link( "About" );
+      should( have_selector( "title", { text: full_title( "About" ) } ) );
     }
 
-    it {
-      should( have_selector( "a.btn[href='/signup']" ) );
+    it( "check contact link" ) {
+      click_link( "Contact" );
+      should( have_selector( "title", { text: full_title( "Contact" ) } ) );
     }
 
-    it {
-      should( have_selector( "nav" ) );
+    it( "check help link" ) {
+      click_link( "Help" );
+      should( have_selector( "title", { text: full_title( "Help" ) } ) );
+    }
+
+    it( "check sign up link" ) {
+      click_link( "Sign up" );
+      should( have_selector( "title", { text: full_title( "Sign up" ) } ) );
     }
   }
 }
