@@ -15,9 +15,14 @@ class User < ActiveRecord::Base
   # create password & password_confirmation attributes
   has_secure_password( );
 
-  before_save { |user|
-    user.email = email.downcase;
-  };
+  #before_save { |user|
+  #  user.email = email.downcase( );
+  #};
+
+  before_save { ||
+    # alternate syntax for above
+    self.email.downcase!( );
+  }
 
   validates( :name, {
     presence: true,
