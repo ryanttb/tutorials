@@ -15,7 +15,9 @@ describe( "User model" ) {
   before {
     @user = User.new( {
       name: "Ryan Westphal",
-      email: "rwestphal@cyber.law.harvard.edu"
+      email: "rwestphal@cyber.law.harvard.edu",
+      password: "foobar",
+      password_confirmation: "foobar"
     } );
   }
 
@@ -24,6 +26,14 @@ describe( "User model" ) {
   it { should( respond_to( :name ) ); }
 
   it { should( respond_to( :email ) ); }
+
+  it { should( respond_to( :password_digest ) ); }
+
+  it { should( respond_to( :password ) ); }
+
+  it { should( respond_to( :password_confirmation ) ); }
+
+  it { should( respond_to( :authenticate ) ); }
 
   it { should( be_valid() ); }
 
@@ -72,7 +82,78 @@ describe( "User model" ) {
       user_with_same_email.save( );
     }
 
-    it { should_not( be_valid( ) ) }
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when password is nil" ) {
+    before {
+      @user.password = nil;
+    }
+
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when password is blank" ) {
+    before {
+      @user.password = " ";
+    }
+
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when confirmation is nil" ) {
+    before {
+      @user.password_confirmation = nil;
+    }
+
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when confirmation is blank" ) {
+    before {
+      @user.password_confirmation = " ";
+    }
+
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when password doesn't match confirmation" ) {
+    before {
+      @user.password_confirmation = "bar";
+    }
+
+    it { should_not( be_valid( ) ); }
+  }
+
+  describe( "return value of authenticate method" ) {
+    before {
+      # we need to save before any of these tests
+      @user.save( );
+    }
+
+    # find a user by email, it should always find one
+    let( :found_user ) { User.find_by_email( @user.email ); }
+
+    describe( "with valid password" ) {
+      # authenticates the found user with its own password, this should authenticate
+      it { should == found_user.authenticate( @user.password ); }
+    }
+
+    describe( "with invalid password" ) {
+      let( :invalid_pw_user ) { found_user.authenticate( "invalid" ); }
+
+      it { should_not == invalid_pw_user }
+
+      specify { invalid_pw_user.should( be_false( ) ); }
+    }
+  }
+
+  describe( "when a password is too short" ) {
+    before {
+      @user.password = @user.password_confirmation = "a" * 5;
+    }
+
+    it { should_not( be_valid( ) ); }
   }
 
   #pending( "add some examples to (or delete) #{__FILE__}" );
