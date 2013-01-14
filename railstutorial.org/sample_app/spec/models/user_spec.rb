@@ -65,7 +65,7 @@ describe( "User model" ) {
     }
   }
 
-  describe( "when email is already taken" ) {
+  describe( "when email is already taken (case insensitive)" ) {
     before {
       user_with_same_email = @user.dup( );
       user_with_same_email.email = @user.email.upcase( );
