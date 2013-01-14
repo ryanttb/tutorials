@@ -15,7 +15,7 @@ describe( "User model" ) {
   before {
     @user = User.new( {
       name: "Ryan Westphal",
-      email: "rwestphal@cyber.law.harvard.edu",
+      email: "rwestphal@harvard.edu",
       password: "foobar",
       password_confirmation: "foobar"
     } );
@@ -83,6 +83,20 @@ describe( "User model" ) {
     }
 
     it { should_not( be_valid( ) ); }
+  }
+
+  describe( "when email is in mixed case" ) {
+    let( :mixed_case_email ) { "RWestphal@Harvard.EDU" }
+
+    before {
+      @user.email = mixed_case_email;
+      @user.save( );
+      @user.reload.email( );
+    }
+
+    it( "should be in all lower-case" ) {
+      @user.email.should == mixed_case_email.downcase( );
+    }
   }
 
   describe( "when password is nil" ) {
