@@ -1,6 +1,14 @@
 @import "bootstrap";
 
+/* vars, mixins, etc. */
+
 $grayMediumLight: #eaeaea;
+
+@mixin box_sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 /* universal */
 
@@ -103,4 +111,13 @@ footer {
   }
 }
 
+/* debug */
 
+.debug_dump {
+  clear: both;
+  float: left;
+  margin-top: 45px;
+  width: 100%;
+
+  @include box_sizing;
+}
