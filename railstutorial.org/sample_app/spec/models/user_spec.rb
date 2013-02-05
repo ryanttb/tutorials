@@ -14,6 +14,9 @@ require "spec_helper";
 
 describe( "User model" ) {
   before {
+    # until we test the authenticate method at the end
+    # we will use this modifiable User object.
+    # We use FactoryGirl to test the 
     @user = User.new( {
       name: "Ryan Westphal",
       email: "rwestphal@harvard.edu",
@@ -141,21 +144,28 @@ describe( "User model" ) {
   }
 
   describe( "return value of authenticate method" ) {
-    before {
-      # we need to save before any of these tests
-      @user.save( );
-    }
+    let( :user ) { FactoryGirl.create( :user ) }
 
-    # find a user by email, it should always find one
-    let( :found_user ) { User.find_by_email( @user.email ); }
+    # we have to change the subject to the FactoryGirl one instead of the one above
+    # so we can use the it { } block
+    subject { user }
+
+    #before {
+      # we (no longer because of FactoryGirl) need to save before any of these tests
+      #@user.save( );
+    #}
+
+    # find a user by email, it should always find one (no longer needed)
+    #let( :found_user ) { User.find_by_email( @user.email ); }
 
     describe( "with valid password" ) {
       # authenticates the found user with its own password, this should authenticate
-      it { should == found_user.authenticate( @user.password ); }
+      # foobar is the password used in factories.rb
+      it { should == user.authenticate( "foobar" ); }
     }
 
     describe( "with invalid password" ) {
-      let( :invalid_pw_user ) { found_user.authenticate( "invalid" ); }
+      let( :invalid_pw_user ) { user.authenticate( "invalid" ); }
 
       it { should_not == invalid_pw_user }
 
