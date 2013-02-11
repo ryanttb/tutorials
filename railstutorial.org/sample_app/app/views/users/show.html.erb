@@ -1,5 +1,21 @@
 <% provide( :title, @user.name ) %>
 
-<h1><%= @user.name %></h1>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%=
+          image_tag( gravatar_url( @user ), {
+            alt: @user.name,
+            class: "gravatar"
+          } );
+        %>
 
-<p><%= @user.email %></p>
+        <%= @user.name %>
+      </h1>
+
+      <p><%= @user.email %></p>
+    </section>
+  </aside>
+</div>
+

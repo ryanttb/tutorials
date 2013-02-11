@@ -16,7 +16,7 @@ describe( "User model" ) {
   before {
     # until we test the authenticate method at the end
     # we will use this modifiable User object.
-    # We use FactoryGirl to test the 
+    # We use FactoryGirl to test the authenticate method
     @user = User.new( {
       name: "Ryan Westphal",
       email: "rwestphal@harvard.edu",
