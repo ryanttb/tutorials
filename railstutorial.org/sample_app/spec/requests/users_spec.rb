@@ -1,17 +1,28 @@
 require "spec_helper";
 
-describe( "users controller" ) {
+describe( "users requests" ) {
   subject { page };
 
   describe( "get /signup" ) {
+    let( :submit ) { "Create my account" }
+
     before( ) { visit( signup_path ); }
 
-    it( ) {
-      should( have_selector( "h1", { text: "Sign up" } ) );
+    describe( "source" ) {
+      it( ) {
+        should( have_selector( "h1", { text: "Sign up" } ) );
+      }
+
+      it( ) {
+        should( have_selector( "title", { text: full_title( "Sign up" ) } ) );
+      }
+
+      it( ) {
+        should( have_selector( "input[type='submit']", { value: submit } ) );
+      }
     }
 
-    it( ) {
-      should( have_selector( "title", { text: full_title( "Sign up" ) } ) );
+    describe( "post /signup" ) {
     }
   }
 
