@@ -23,6 +23,28 @@ describe( "users requests" ) {
     }
 
     describe( "post /signup" ) {
+      describe( "with invalid information" ) {
+        it( "should not create a user" ) {
+          expect {
+            click_button( submit );
+          }.not_to( change( User, :count ) );
+        }
+      }
+
+      describe( "with valid information" ) {
+        before {
+          fill_in( "Name", { with: "Foo Bar" } );
+          fill_in( "Email", { with: "foo@bar.com" } );
+          fill_in( "Password", { with: "FooBar" } );
+          fill_in( "Confirmation", { with: "FooBar" } );
+        }
+
+        it( "should create a user" ) {
+          expect {
+            click_button( submit );
+          }.to( change( User, :count ).by( 1 ) );
+        }
+      }
     }
   }
 
