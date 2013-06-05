@@ -1,17 +1,50 @@
 require "spec_helper";
 
-describe( "users controller" ) {
+describe( "users requests" ) {
   subject { page };
 
   describe( "get /signup" ) {
+    let( :submit ) { "Create my account" }
+
     before( ) { visit( signup_path ); }
 
-    it( ) {
-      should( have_selector( "h1", { text: "Sign up" } ) );
+    describe( "source" ) {
+      it( ) {
+        should( have_selector( "h1", { text: "Sign up" } ) );
+      }
+
+      it( ) {
+        should( have_selector( "title", { text: full_title( "Sign up" ) } ) );
+      }
+
+      it( ) {
+        should( have_selector( "input[type='submit']", { value: submit } ) );
+      }
     }
 
-    it( ) {
-      should( have_selector( "title", { text: full_title( "Sign up" ) } ) );
+    describe( "post /signup" ) {
+      describe( "with invalid information" ) {
+        it( "should not create a user" ) {
+          expect {
+            click_button( submit );
+          }.not_to( change( User, :count ) );
+        }
+      }
+
+      describe( "with valid information" ) {
+        before {
+          fill_in( "Name", { with: "Foo Bar" } );
+          fill_in( "Email", { with: "foo@bar.com" } );
+          fill_in( "Password", { with: "FooBar" } );
+          fill_in( "Confirmation", { with: "FooBar" } );
+        }
+
+        it( "should create a user" ) {
+          expect {
+            click_button( submit );
+          }.to( change( User, :count ).by( 1 ) );
+        }
+      }
     }
   }
 
