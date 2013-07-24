@@ -1,0 +1,60 @@
+<h1>Search#search</h1>
+
+<%= form_tag search_path, { method: :get } do %>
+  <%= text_field_tag :keywords, params[ :keywords ] %>
+  <%= submit_tag 'Search', { name: nil } %>
+<% end %>
+
+<% if @hits.any? %>
+  <h2>Search Results</h2>
+  <ul>
+    <% @hits.each do |hit| %>
+      <li>
+      <%= link_to hit.stored( :title ), project_path( hit.primary_key ) %><br>
+      <% hit.highlights( :description ).each do |highlight| %>
+        <%= highlight.format { |word| "*#{word}*" } %>
+      <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%
+  facets_html = ''
+  if not @search.nil?
+  
+    # check for existing tags in query string
+    existing_tag_facets = [ ]
+    if params[ :tag ].present?
+      existing_tag_facets = params[ :tag ]
+    end
+
+    facet_links_off = ''
+    facet_links_on = ''
+
+    @search.facet( :tag_list ).rows.each_with_index do |facet, index|
+      break if index == 10;
+
+      # check if facet is selected
+      if ( params[ :tag ].kind_of?( Array ) and params[ :tag ].include? facet.value )
+        tag_facets = existing_tag_facets - [ facet.value ]
+
+        facet_links_on << "<li>#{link_to facet.value, { keywords: params[ :keywords ], tag: tag_facets }} (-)</li>"
+      elsif @hits.size > 1 # set to 0 if you want to always show the tags
+        tag_facets = existing_tag_facets + [ facet.value ]
+        
+        facet_links_off << "<li>#{link_to facet.value, { keywords: params[ :keywords ], tag: tag_facets}} (#{facet.count})</li>"
+      end
+    end
+
+    facets_html << '<b>Filter by tags</b>'
+    if facet_links_on.size > 0
+      facets_html << "<ul class='search_facets_on'>#{facet_links_on}</ul>"
+    end
+    if facet_links_off.size > 0
+      facets_html << "<ul class='search_facets_off'>#{facet_links_off}</ul>"
+    end
+
+  end
+%>
+<%= raw facets_html %>
