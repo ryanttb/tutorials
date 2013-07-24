@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
 
   searchable :auto_index => true, :auto_remove => true do
     string :title, :stored => true
-    string :description, :stored => true
+    text :description, :stored => true
     string :tag_list, :multiple => true, :stored => true
   end
 end
