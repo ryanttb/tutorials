@@ -40,7 +40,7 @@
         tag_facets = existing_tag_facets - [ facet.value ]
 
         facet_links_on << "<li>#{link_to facet.value, { keywords: params[ :keywords ], tag: tag_facets }} (-)</li>"
-      elsif @hits.size > 1 # set to 0 if you want to always show the tags
+      else
         tag_facets = existing_tag_facets + [ facet.value ]
         
         facet_links_off << "<li>#{link_to facet.value, { keywords: params[ :keywords ], tag: tag_facets}} (#{facet.count})</li>"
